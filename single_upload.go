@@ -18,10 +18,6 @@ func (receiver IGUploader) UploadSinglePost(post SinglePost) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	err = containerRes.Body.Close()
-	if err != nil {
-		return "", err
-	}
 
 	var containerResponse IGContainerResponse
 	err = json.NewDecoder(containerRes.Body).Decode(&containerResponse)
@@ -32,6 +28,7 @@ func (receiver IGUploader) UploadSinglePost(post SinglePost) (string, error) {
 	publishParams.Add("creation_id", containerResponse.ContainerID)
 	publishParams.Add("access_token", receiver.AccessToken)
 	publishRes, err := http.PostForm(endpoint, publishParams)
+
 	if err != nil {
 		return "", err
 	}
@@ -40,6 +37,7 @@ func (receiver IGUploader) UploadSinglePost(post SinglePost) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return publishResponse.MediaID, nil
+	mediaId := publishResponse.MediaID
+	return mediaId, nil
 
 }
