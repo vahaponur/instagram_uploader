@@ -1,11 +1,8 @@
-module instagram_uploader
+module github.com/vahaponur/instagram-uploader
 
 go 1.21.0
 
-require (
-	github.com/spf13/viper v1.18.2
-	github.com/vahaponur/instagram-uploader v0.0.0-20240120200014-d7b61099f2c9
-)
+require github.com/spf13/viper v1.18.2
 
 require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
