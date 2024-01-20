@@ -2,7 +2,7 @@ package test
 
 import (
 	"github.com/spf13/viper"
-	instagram_uploader "github.com/vahaponur/instagram-uploader"
+	instagram_uploader "github.com/vahaponur/instagram_uploader"
 	"log"
 	"testing"
 )

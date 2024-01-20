@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-// UploadSingleImagePost Creates a single media container after then, publishes it,if successful returns the IG MediaID
+// UploadSingleImagePost Creates a single(image) media container after then, publishes it,if successful returns the IG MediaID
 func (receiver IGUploader) UploadSingleImagePost(post SingleImagePost) (string, error) {
 	containerEndpoint := fmt.Sprintf("https://graph.facebook.com/%s/%s/media", receiver.Version, receiver.ID)
 	containerParams := url.Values{}

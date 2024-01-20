@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// UploadCarouselImagePost Uploads Carousel (multiple) Image post, if no error, returns media id
 func (receiver IGUploader) UploadCarouselImagePost(post CarouselImagePost) (string, error) {
 	containerEndpoint := fmt.Sprintf("https://graph.facebook.com/%s/%s/media", receiver.Version, receiver.ID)
 	containerParams := url.Values{}
