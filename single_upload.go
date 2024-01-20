@@ -3,18 +3,25 @@ package instagram_uploader
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 )
 
-// UploadSinglePost Creates a container after then, publishes it,if successful returns the IG MediaID
-func (receiver IGUploader) UploadSinglePost(post SinglePost) (string, error) {
-	containerEndpoint := fmt.Sprintf("https://graph.facebook.com/v18.0/%s/media", receiver.ID)
+// UploadSingleImagePost Creates a single media container after then, publishes it,if successful returns the IG MediaID
+func (receiver IGUploader) UploadSingleImagePost(post SingleImagePost) (string, error) {
+	containerEndpoint := fmt.Sprintf("https://graph.facebook.com/%s/%s/media", receiver.Version, receiver.ID)
 	containerParams := url.Values{}
 	containerParams.Add("access_token", receiver.AccessToken)
 	containerParams.Add("caption", post.Caption)
 	containerParams.Add("image_url", post.ImageURL)
 	containerRes, err := http.PostForm(containerEndpoint, containerParams)
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(containerRes.Body)
 
 	if err != nil {
 		return "", err
@@ -25,12 +32,17 @@ func (receiver IGUploader) UploadSinglePost(post SinglePost) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	publishEndpoint := fmt.Sprintf("https://graph.facebook.com/v18.0/%s/media_publish", receiver.ID)
+	publishEndpoint := fmt.Sprintf("https://graph.facebook.com/%s/%s/media_publish", receiver.Version, receiver.ID)
 	publishParams := url.Values{}
 	publishParams.Add("creation_id", containerResponse.ContainerID)
 	publishParams.Add("access_token", receiver.AccessToken)
 	publishRes, err := http.PostForm(publishEndpoint, publishParams)
-
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			fmt.Println()
+		}
+	}(publishRes.Body)
 	if err != nil {
 		return "", err
 	}
